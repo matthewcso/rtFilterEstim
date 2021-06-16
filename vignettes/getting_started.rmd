@@ -1,0 +1,14 @@
+---
+title: "Getting Started"
+author: "Matthew So"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r diag1,message=FALSE}
+library(rtFilterEstim)
+```

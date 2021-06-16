@@ -1,0 +1,18 @@
+Package: rtFilterEstim
+Title: r(t) estimation 
+Description: This package estimates exponential growth rates from timeseries. Intended for use on incidence timeseries for pandemic management.
+Version: 0.1
+Authors@R: c(person("Matthew", "So", email="som1@myumanitoba.ca", role=c("aut", "cre")))
+Depends: R (>= 3.5.0)
+Imports:
+    data.table,
+    zoo,
+    stats
+Suggests:
+    knitr
+RoxygenNote: 7.1.1
+Encoding: UTF-8
+License: GPL
+LazyData: yes
+VignetteBuilder: knitr
+URL: https://github.com/matthewcso/rtFilterEstim
