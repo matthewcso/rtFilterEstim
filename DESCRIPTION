@@ -10,7 +10,9 @@ Imports:
     zoo,
     stats
 Suggests:
-    knitr
+    knitr,
+    rmarkdown, 
+    ggplot2
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 License: GPL
