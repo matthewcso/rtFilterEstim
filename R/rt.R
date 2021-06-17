@@ -55,13 +55,13 @@ rt_estimation_ci <- function(incidence, ci_lower, ci_higher, n_resample = 200, l
 
     estimated <- rollapply(log(resampled), n, linear_regression, fill = NA, align = "center")
 
-  #  for (i in c(1:n_half)) {
-  #    estimated[i, ] <- estimated[(n_half + 1), ]
-  #  }
+    for (i in c(1:n_half)) {
+      estimated[i, ] <- estimated[(n_half + 1), ]
+    }
 
-  #  for (i in c((length(estimated[, "mean"]) - n_half + 1):length(estimated[, "mean"]))) {
-  #    estimated[i, ] <- estimated[(length(estimated[, "mean"]) - n_half)]
-  #  }
+    for (i in c((length(estimated[, "mean"]) - n_half + 1):length(estimated[, "mean"]))) {
+      estimated[i, ] <- estimated[(length(estimated[, "mean"]) - n_half)]
+    }
 
 
     this_mean <- data.table::shift(estimated[, "mean"], shift_amt)
@@ -78,13 +78,13 @@ rt_estimation_ci <- function(incidence, ci_lower, ci_higher, n_resample = 200, l
   i <- incidence
   i[i < 0] <- 0
   center <- rollapply(log(i), n, linear_regression, fill = NA, align = "center")
-#  for (i in c(1:n_half)) {
-#    center[i, ] <- center[(n_half + 1), ]
-#  }
+  for (i in c(1:n_half)) {
+    center[i, ] <- center[(n_half + 1), ]
+  }
 
-#  for (i in c((length(center[, "mean"]) - n_half + 1):length(center[, "mean"]))) {
-#    center[i, ] <- center[(length(center[, "mean"]) - n_half)]
-#  }
+  for (i in c((length(center[, "mean"]) - n_half + 1):length(center[, "mean"]))) {
+    center[i, ] <- center[(length(center[, "mean"]) - n_half)]
+  }
 
 
   center <- data.table::shift(center[, "mean"], shift_amt)
@@ -100,7 +100,7 @@ rt_estimation_ci <- function(incidence, ci_lower, ci_higher, n_resample = 200, l
     quantile(x, 0.5, na.rm = TRUE)
   })
 
- # center[is.na(lowers) || is.na(uppers)] <- NA
+  center[is.na(lowers) || is.na(uppers)] <- NA
 
   df <- data.frame(mean = center, lower = lowers, upper = uppers, sampled_mean = sampled_mean) # center
 
