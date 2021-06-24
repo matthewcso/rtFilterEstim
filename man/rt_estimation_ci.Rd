@@ -11,7 +11,8 @@ rt_estimation_ci(
   n_resample = 200,
   level = 0.95,
   shift_amt = 0,
-  n = 7
+  n = 7,
+  hide_invalid = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ rt_estimation_ci(
 \item{shift_amt}{number of timesteps to shift estimation back by (integer)}
 
 \item{n}{number of timesteps to filter (longer is smoother), must be odd}
+
+\item{hide_invalid}{whether or not to return NA for the first/last n-1 times}
 }
 \value{
 dataframe with estimated r(t)

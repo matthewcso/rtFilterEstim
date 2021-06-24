@@ -4,7 +4,14 @@
 \alias{filter_and_estimate}
 \title{Utility function for filtering and estimating}
 \usage{
-filter_and_estimate(incidence, n_resample, level = 0.95, shift_amt = 0, n = 7)
+filter_and_estimate(
+  incidence,
+  n_resample,
+  level = 0.95,
+  shift_amt = 0,
+  n = 7,
+  hide_invalid = TRUE
+)
 }
 \arguments{
 \item{incidence}{incidence timeseries, vector}
@@ -16,6 +23,8 @@ filter_and_estimate(incidence, n_resample, level = 0.95, shift_amt = 0, n = 7)
 \item{shift_amt}{number of timesteps to shift estimation back by (integer)}
 
 \item{n}{number of timesteps to filter (longer is smoother), must be odd}
+
+\item{hide_invalid}{whether or not to return NA for the first/last n-1 times}
 }
 \value{
 dataframe with estimated r(t)

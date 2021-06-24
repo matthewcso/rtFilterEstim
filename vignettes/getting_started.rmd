@@ -37,7 +37,23 @@ Then, we'll just call the simple utility function filter_and_estimate on the inc
 ``` {r estimate, message=FALSE}
 suppressWarnings(
 estimated_rt <- filter_and_estimate(incidence, 
-                                    n_resample=1, n=7)
+                                    n_resample=1, n=7, hide_invalid=FALSE)
+)
+df <- data.frame(incidence=incidence, rt_estimate = estimated_rt$mean, t = c(1:250), ideal = rep(log(1.03), 250))
+
+ggplot(df) +
+    geom_line(aes(x=t, y=rt_estimate, color='Estimated'), alpha=0.5, size=2) +
+    geom_line(aes(x=t, y=ideal, color='Ideal'), alpha=0.5, size=2)+
+    labs(x='time', y='Growth rate', col='') +
+    theme(text = element_text(size=20))
+
+```
+
+We can set hide_invalid to TRUE (the default)to remove the points at the beginning and end of the curves.
+``` {r estimate_no_invalid, message=FALSE}
+suppressWarnings(
+estimated_rt <- filter_and_estimate(incidence, 
+                                    n_resample=1, n=7, hide_invalid=TRUE)
 )
 df <- data.frame(incidence=incidence, rt_estimate = estimated_rt$mean, t = c(1:250), ideal = rep(log(1.03), 250))
 

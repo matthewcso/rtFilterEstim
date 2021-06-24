@@ -1,19 +1,16 @@
 #' Utility function for filtering and estimating
 #'
-#' @param incidence incidence timeseries, vector
-#' @param n_resample number of bootstrapping attempts for confidence interval estimation
-#' @param level confidence interval level
-#' @param shift_amt number of timesteps to shift estimation back by (integer)
-#' @param n number of timesteps to filter (longer is smoother), must be odd
+#' @inheritParams rt_estimation_ci
+#' @param hide_invalid whether or not to return NA for the first/last n-1 times
 #' @return dataframe with estimated r(t)
 #' @export
-filter_and_estimate <- function(incidence, n_resample, level = 0.95, shift_amt = 0, n = 7) {
+filter_and_estimate <- function(incidence, n_resample, level = 0.95, shift_amt = 0, n = 7, hide_invalid=TRUE) {
   filtered <- linear_filter(incidence, level = level)
   smoothed <- filtered[, "fit"]
   low_smoothed <- filtered[, "lwr"]
   high_smoothed <- filtered[, "upr"]
   rt_smoothed_normal <- rt_estimation_ci(smoothed, low_smoothed, high_smoothed,
-    level = level, n_resample = n_resample, n = n, shift_amt = shift_amt
+    level = level, n_resample = n_resample, n = n, shift_amt = shift_amt, hide_invalid=hide_invalid
   )
   return(rt_smoothed_normal)
 }
@@ -28,12 +25,13 @@ filter_and_estimate <- function(incidence, n_resample, level = 0.95, shift_amt =
 #' @param level confidence interval level
 #' @param shift_amt number of timesteps to shift estimation back by (integer)
 #' @param n number of timesteps to filter (longer is smoother), must be odd
+#' @param hide_invalid whether or not to return NA for the first/last n-1 times
 #' @return dataframe with estimated r(t)
 #' @importFrom zoo rollapply
 #' @importFrom data.table shift
 #' @importFrom stats qnorm rnorm quantile
 #' @export
-rt_estimation_ci <- function(incidence, ci_lower, ci_higher, n_resample = 200, level = 0.95, shift_amt = 0, n = 7) {
+rt_estimation_ci <- function(incidence, ci_lower, ci_higher, n_resample = 200, level = 0.95, shift_amt = 0, n = 7, hide_invalid=TRUE) {
   stopifnot(length(incidence) == length(ci_lower))
   stopifnot(length(incidence) == length(ci_higher))
   stopifnot((n %% 2) == 1)
@@ -101,8 +99,12 @@ rt_estimation_ci <- function(incidence, ci_lower, ci_higher, n_resample = 200, l
   })
 
   center[is.na(lowers) || is.na(uppers)] <- NA
+  
 
   df <- data.frame(mean = center, lower = lowers, upper = uppers, sampled_mean = sampled_mean) # center
-
+  if(hide_invalid){
+      df[1:(n-1),] = NA
+      df[(nrow(df) - (n-2)):nrow(df),] = NA
+  }
   return(df) # center
 }

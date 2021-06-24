@@ -136,7 +136,8 @@
   n_resample <span class='op'>=</span> <span class='fl'>200</span>,
   level <span class='op'>=</span> <span class='fl'>0.95</span>,
   shift_amt <span class='op'>=</span> <span class='fl'>0</span>,
-  n <span class='op'>=</span> <span class='fl'>7</span>
+  n <span class='op'>=</span> <span class='fl'>7</span>,
+  hide_invalid <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -169,6 +170,10 @@
     <tr>
       <th>n</th>
       <td><p>number of timesteps to filter (longer is smoother), must be odd</p></td>
+    </tr>
+    <tr>
+      <th>hide_invalid</th>
+      <td><p>whether or not to return NA for the first/last n-1 times</p></td>
     </tr>
     </table>
 
